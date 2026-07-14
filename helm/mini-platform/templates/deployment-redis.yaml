@@ -1,0 +1,27 @@
+{{- if .Values.redis.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mini-platform.fullname" . }}-redis
+  labels:
+    app: mini-platform-redis
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.redis.replicaCount }}
+  selector:
+    matchLabels:
+      app: mini-platform-redis
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: mini-platform-redis
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: mini-platform-redis
+          image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
+          imagePullPolicy: {{ .Values.redis.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.redis.service.targetPort }}
+{{- end  -}}

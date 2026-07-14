@@ -1,0 +1,14 @@
+{{- if .Values.redis.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mini-platform.fullname" . }}-redis
+spec:
+  selector:
+    app: mini-platform-redis
+    release: {{ .Release.Name }}
+  ports:
+  - port: {{ .Values.redis.service.port }}
+    targetPort: {{ .Values.redis.service.targetPort }}
+  type: ClusterIP
+{{- end -}}

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mini-platform.fullname" . }}-config
+
+data:
+{{- if .Values.redis.enabled }}
+  REDIS_HOST: {{ printf "%s-redis" (include "mini-platform.fullname" .) | quote }}
+  REDIS_PORT: {{ .Values.redis.service.port | quote }}
+{{- else }}
+  REDIS_HOST: {{ required "Redis external host is required when redis is disabled" .Values.redis.external.host | quote }}
+  REDIS_PORT: {{ required "Redis external port is required when redis is disabled" .Values.redis.external.port | quote }}
+{{- end }}

@@ -1,0 +1,34 @@
+api:
+  replicaCount: 3
+
+  image:
+    repository: ghcr.io/ojasik/mini-platform
+    tag: "75347dc333ab210c53850b1d730f3e6db5de69a3"
+    pullPolicy: Always
+
+  service:
+    type: ClusterIP
+    port: 8080
+    targetPort: 8080
+
+redis:
+  enabled: true
+  replicaCount: 1
+
+  image:
+    repository: redis
+    tag: "7-alpine"
+    pullPolicy: IfNotPresent
+
+  service:
+    port: 6379
+    targetPort: 6379
+
+  external:
+    host: ""
+    port: 6379
+
+ingress:
+  enabled: true
+  className: "traefik"
+  host: mini-platform.local

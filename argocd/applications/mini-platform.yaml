@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+
+metadata:
+  name: mini-platform
+  namespace: argocd
+  
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/Ojasik/mini-platform-infra.git
+    targetRevision: main
+    path: helm/mini-platform
+
+    helm:
+      releaseName: mini-platform
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+
+  syncPolicy:
+    automated:
+      prune: true 
+      selfHeal: true
